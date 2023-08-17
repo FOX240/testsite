@@ -1,0 +1,40 @@
+name: RDP start
+on: workflow_dispatch
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    timeout-minutes: 9999
+
+    steps:
+
+    - name: Download ngrok
+      run: |
+        Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok.zip
+        Invoke-WebRequest https://pastebin.com/raw/FrqKv1kp -OutFile start.bat
+
+    - name: Extract ngrok Files
+      run: Expand-Archive ngrok.zip
+
+    - name: Connecting ngrok Account
+      run: .\ngrok\ngrok.exe authtoken $Env:TOKEN
+      env:
+        TOKEN: ${{ secrets.TOKEN }}
+
+    - name: Enable RDP Access
+      run: |
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
+        Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
+
+    - name: Create Tunnel
+      run: Start-Process Powershell -ArgumentList '-Noexit -Command ".\ngrok\ngrok.exe tcp 3389"'
+
+    - name: Connect to RDP
+      run: cmd /c start.bat
+
+    - name: Time Count
+      run: |
+        Invoke-WebRequest https://pastebin.com/raw/0LjJrVPm -OutFile loop.ps1
+        ./loop.ps1
