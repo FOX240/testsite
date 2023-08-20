@@ -28,14 +28,12 @@ jobs:
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
 
     - name: Create Tunnel
-      run: Start-Process Powershell -ArgumentList '-Noexit -Command ".\ngrok\ngrok.exe tcp 3389"'
+      run: Start-Process Powershell -ArgumentList '-Noexit -Command ".\ngrok\ngrok.exe tcp 3389 --region=ap"'
 
     - name: Connect to RDP
       run: cmd /c start.bat
 
-      - name: setting
-      run: .\ngrok\ngrok.exe tcp 5900  --region=ap 
-
+      
     - name: Time Count
       run: |
         Invoke-WebRequest https://pastebin.com/raw/0LjJrVPm -OutFile loop.ps1
