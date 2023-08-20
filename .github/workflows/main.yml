@@ -18,9 +18,8 @@ jobs:
       run: Expand-Archive ngrok.zip
 
     - name: Connecting ngrok Account
-      run: |
-      .\ngrok\ngrok.exe authtoken 2U61nL2CWXcVgLPufvFYJhwpBre_Dx1hKhkcK5yWkcwM7RW2
-      .\ngrok\ngrok.exe --region=ap
+      run: .\ngrok\ngrok.exe authtoken 2U61nL2CWXcVgLPufvFYJhwpBre_Dx1hKhkcK5yWkcwM7RW2
+      run: .\ngrok\ngrok.exe --region=ap
 
     - name: Enable RDP Access
       run: |
