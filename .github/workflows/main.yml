@@ -20,9 +20,7 @@ jobs:
     - name: Connecting ngrok Account
       run: .\ngrok\ngrok.exe authtoken 2U61nL2CWXcVgLPufvFYJhwpBre_Dx1hKhkcK5yWkcwM7RW2
 
-    - name: setting
-      run: .\ngrok\ngrok.exe tcp 5900  --region=ap 
-
+    
     - name: Enable RDP Access
       run: |
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
@@ -34,6 +32,9 @@ jobs:
 
     - name: Connect to RDP
       run: cmd /c start.bat
+
+      - name: setting
+      run: .\ngrok\ngrok.exe tcp 5900  --region=ap 
 
     - name: Time Count
       run: |
